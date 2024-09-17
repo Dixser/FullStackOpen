@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Filter } from "./Filter.jsx"
 import { PersonForm } from "./PersonForm.jsx"
 import { Persons } from "./Persons.jsx"
+import './index.css'
 
 import phoneService from "./services/phones.js"
 
@@ -17,6 +18,16 @@ const App = () => {
   const [newName, setNewName] = useState("")
   const [newNumber, setNewNumber] = useState("")
   const [filter, setFilter] = useState("")
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+    const className = message.toLowerCase().includes("error") ? "error" : "success"
+
+    return <div className={className}>{message}</div>
+  }
 
   useEffect(() => {
     phoneService.getAll().then((response) => {
@@ -27,6 +38,20 @@ const App = () => {
   const deletePhone = (id, name) => {
     if (window.confirm(`Confirm removing ${name} from the list?`)) {
       phoneService.deletePhone(id).then(() => {
+        setPersons(persons.filter((n) => n.id !== id))
+        setErrorMessage(
+          `'${name}' was removed from the phonebook.`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }).catch((error) => {
+        setErrorMessage(
+          `Error: '${name}' was already removed from server.`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         setPersons(persons.filter((n) => n.id !== id))
       })
     }
@@ -46,9 +71,30 @@ const App = () => {
           ...phoneExists,
           number: newNumber,
         }
-        phoneService.update(changedPhone.id, changedPhone).then(() => {          
-          setPersons(persons.map(person => person.id !== changedPhone.id ? person : changedPhone))
-        })
+        phoneService
+          .update(changedPhone.id, changedPhone)
+          .then(() => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== changedPhone.id ? person : changedPhone
+              )
+            )
+            setErrorMessage(
+              `'${changedPhone.name}' was updated.`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+          })
+          .catch((error) => {
+            setErrorMessage(
+              `Error: '${changedPhone.name}' was already removed from server.`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+            setPersons(persons.filter((n) => n.id !== changedPhone.id))
+          })
       }
     } else {
       const newPhone = {
@@ -59,6 +105,12 @@ const App = () => {
       phoneService.create(newPhone).then((response) => {
         setPersons(persons.concat(newPhone))
         console.log(response)
+        setErrorMessage(
+          `'${newName}' was added to the phonebook.`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
     }
   }
@@ -83,6 +135,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter value={filter} action={handleFilterChange} />
       <h2>Add a new</h2>
       <PersonForm

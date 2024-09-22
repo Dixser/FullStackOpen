@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react"
-import withResultsList from "./mocks/list-of-countries.json"
-import weather from "./mocks/weather-response.json"
 import axios from "axios"
 
 function App() {
-  //console.log(import.meta.env.VITE_WEATHER_API_KEY)
-
-  //const [countryList, setCountryList] = useState(withResultsList)
-
-  //const countryList = withResultsList
 
   useEffect(() => {
     axios.get(import.meta.env.VITE_COUNTRIES_URL).then((response) => {
@@ -18,7 +11,6 @@ function App() {
 
   const [countryList, setCountryList] = useState([])
   const [filter, setFilter] = useState("")
-  //const [countryList, setCountryList] = useState(withResultsCountry)
   const filteredCountryList =
     filter !== ""
       ? countryList.filter((country) =>
@@ -88,7 +80,6 @@ function App() {
         })
     }, [])
 
-    console.log(data)
     return (
       <div>
         <h1>{data.name.common}</h1>

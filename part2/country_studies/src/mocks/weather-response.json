@@ -1,0 +1,45 @@
+{
+    "coord": {
+      "lon": -0.7011,
+      "lat": 38.2622
+    },
+    "weather": [
+      {
+        "id": 803,
+        "main": "Clouds",
+        "description": "broken clouds",
+        "icon": "04d"
+      }
+    ],
+    "base": "stations",
+    "main": {
+      "temp": 296.72,
+      "feels_like": 296.88,
+      "temp_min": 295.96,
+      "temp_max": 297.31,
+      "pressure": 1014,
+      "humidity": 67,
+      "sea_level": 1014,
+      "grnd_level": 1000
+    },
+    "visibility": 10000,
+    "wind": {
+      "speed": 4.12,
+      "deg": 110
+    },
+    "clouds": {
+      "all": 75
+    },
+    "dt": 1726753268,
+    "sys": {
+      "type": 2,
+      "id": 2036850,
+      "country": "ES",
+      "sunrise": 1726724890,
+      "sunset": 1726769096
+    },
+    "timezone": 7200,
+    "id": 2518559,
+    "name": "Elche",
+    "cod": 200
+  }
